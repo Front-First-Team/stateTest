@@ -1,0 +1,39 @@
+{
+    "Comments": [
+    {
+      "User": {
+        "nickname": "김사과"
+      },
+      "content": "오늘도 화이팅입니다!",
+      "myComment": false
+    },
+    {
+      "User": {
+        "nickname": "반하나"
+      },
+      "content": "오늘도 화이팅입니다!",
+      "myComment": false
+    },
+    {
+      "User": {
+        "nickname": "오렌지"
+      },
+      "content": "오늘도 화이팅입니다!",
+      "myComment": false
+    },
+    {
+      "User": {
+        "nickname": "이멜론"
+      },
+      "content": "오늘도 화이팅입니다!",
+      "myComment": false
+    },
+    {
+      "User": {
+        "nickname": "박수박"
+      },
+      "content": "오늘도 화이팅입니다!",
+      "myComment": false
+    }
+  ]
+}

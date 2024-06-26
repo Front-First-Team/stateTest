@@ -12,26 +12,28 @@ function State1() {
     삭제 버턴을 눌렀을 때 데이터가 삭제될 수 있도록 해주세요
   */
 
- /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
- 
-   const[playlist, setPlaylist] = useState(PlayListMock.playlist);  
+  /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
+
+  const [playlist, setPlaylist] = useState(PlayListMock.playlist);
 
   const songTitle = useRef();
   const singer = useRef();
 
   const onClickAddNewSong = () => {
     const newSong = {
-      title : songTitle,
-      signer : singer,
-    }
+      title: songTitle.current.value,
+      signer: singer.current.value,
+    };
+    console.log("새로 들어온 정보 : ", newSong);
     setPlaylist([...playlist, newSong]);
-  }
-  
+    console.log(playlist);
+  };
 
   const onClickDelete = (songTitle) => {
-    const deletedPlaylist = playlist.filter((song)=>  song.title !== songTitle);
-    setPlaylist(deletedPlaylist)
-  }
+    const deletedPlaylist = playlist.filter((song) => song.title !== songTitle);
+    setPlaylist(deletedPlaylist);
+    console.log(playlist);
+  };
 
   /* value를 전달해주는 방법 두가지
   1. form 
@@ -42,29 +44,29 @@ function State1() {
     <>
       <h1>문제1</h1>
       <div>
-      {playlist.map((song, index) => (
-        <ul key={index}>
-          <li>
-            <h3>{song.title}</h3>
-            <p>{song.signer}</p>
-            <button onClick={() => onClickDelete(song.title)}>삭제</button>
-          </li>
-        </ul>
-      ))}
-    </div>
+        {playlist.map((song, index) => (
+          <ul key={index}>
+            <li>
+              <h3>{song.title}</h3>
+              <p>{song.signer}</p>
+              <button onClick={() => onClickDelete(song.title)}>삭제</button>
+            </li>
+          </ul>
+        ))}
+      </div>
       <ul>
         <li>
           <h3>Summer</h3>
           <p>Joe Hisaishi</p>
-          <button onClick = {onClickDelete}>삭제 </button>
+          <button onClick={onClickDelete}>삭제 </button>
         </li>
       </ul>
       <div>
         <p>
-          곡명 : <input ref={songTitle}/>
+          곡명 : <input ref={songTitle} />
         </p>
         <p>
-          가수/작곡 : <input ref={singer}/>
+          가수/작곡 : <input ref={singer} />
         </p>
         <p>
           <button onClick={onClickAddNewSong}>추가</button>

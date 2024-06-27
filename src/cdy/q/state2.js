@@ -17,7 +17,6 @@ function State2() {
             3. 댓글 삭제 기능 ( 본인이 작성한 댓글만 삭제할 수 있습니다, myComment 활용 )
     */
 
-  
   const [post, setPost] = useState({
     title: "안녕하세요 여러분 김성용 강사입니다 :)",
     content: "오늘도 모두 화이팅입니다!",
@@ -26,23 +25,32 @@ function State2() {
       age: 20,
       height: 190,
     },
-    Comments 
+    Comments,
   });
 
-  const [commentlist , setCommentlist] = useState(Comments.Comments)
-  const onClickAddComment = (event) => { 
+  const [commentlist, setCommentlist] = useState(Comments.Comments);
+
+  console.log("기존 댓글 : ", commentlist);
+
+  const onClickAddComment = (event) => {
+    if (!event.target.writer.value && !event.target.content.value) {
+      alert("값을 입력해주세요");
+      event.preventDefault();
+      return;
+    }
+
     event.preventDefault();
 
     const newComment = {
-      "User" : {
-        "nickname" : event.target.writer.value //form의 onSubmit만 가능
+      User: {
+        nickname: event.target.writer.value, //form의 onSubmit만 가능
       },
-      "content" : event.target.content.value,
-      "myComment" : false
-    }
+      content: event.target.content.value,
+      myComment: false,
+    };
     setCommentlist([...commentlist, newComment]);
     console.log("setComment이후 : ", commentlist);
-  }
+  };
 
   return (
     <S.Wrapper>
@@ -61,35 +69,26 @@ function State2() {
         <p>
           작성자 키: <span>{post.User.height}</span>
         </p>
-        
       </S.PostInfo>
       <form onSubmit={onClickAddComment}>
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" name="writer"/>
-        <input placeholder="댓글 내용" name="content"/>
+        <input placeholder="작성자" name="writer" />
+        <input placeholder="댓글 내용" name="content" />
         <button>댓글 작성</button>
       </form>
       <S.CommentList>
-      <p>이거는 나와요</p>
-      {/* {commentlist.map((comment, index) => {
-        <Comment writer={comment.User.nickname}/>
-      })} */}
-        <Comment commentlist={commentlist}/>
-
-
-
-
-
-
-
-      {/* {commentlist.map((comment))=>{comment.nickname}} */}
+        <p>이건보여</p>
+        {commentlist.map((comment, index) => {
+          console.log("넘어가기전 :", comment);
+          return <Comment comment={comment} key={index} />;
+        })}
+        {/* switch/for문 사용하고 싶을 경우
         
-        {/* {commentlist.map((comment, index)=> {
-          {console.log('여기서',comment.User.nickname)}
-          <Comment key={index} nickname={comment.User.nickname} content={comment.content}/>
-        })} */}
+        {() => {for(let i = 0 ; i < commentlist.length ; i++){
+          return '';
+        }}} */}
       </S.CommentList>
     </S.Wrapper>
   );

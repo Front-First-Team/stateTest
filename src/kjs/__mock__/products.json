@@ -1,6 +1,5 @@
 {
   "products": [
-
     {
       "productName": "구멍난 양말",
       "productPrice": "1000",
@@ -29,8 +28,6 @@
         "productDetailInfo": "구멍난 양말 상세 정보 입니다."
       }
     },
-
-
     {
       "productName": "product example -1",
       "productPrice": "1000000",
@@ -54,8 +51,6 @@
         "productDetailInfo": "product example -1, Detail"
       }
     },
-
-
     {
       "productName": "product example -2",
       "productPrice": "900",
@@ -94,6 +89,5 @@
         "productDetailInfo": "product example -2, Detail"
       }
     }
-    
   ]
 }

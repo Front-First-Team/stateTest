@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Comment from "./components/comment";
 
 function State2() {
+
   /*  
     문제 2.
 
@@ -63,94 +64,75 @@ function State2() {
     ],
   });
 
-  //----------------------------------------------------------------
-  // id 추가된 post 생성 :
-  const plusIdComments = post.Comments.map((data) => ({
-    ...data, id: Math.floor(Math.random() * 10000000)
-  }))
-  const copyPost = {...post}
-  copyPost.Comments = plusIdComments
-
-  const [newPost, setNewPost] = useState(copyPost) //--> 상태를 새롭게 생성해버렸음
-
-  //----------------------------------------------------------------
+  //---------------------------------------------------------------------------------
   // 작성 :
-  const onPressAddComment = (event) => {
+  const onPressNewComment = (event) => {
     event.preventDefault()
-    const addWriter = event.target.writer.value
-    const addWriteComment = event.target.writeComment.value
-    const writePost = {...newPost}
+    const tempPost = {...post}
+    
+    if(!event.target.user.value.trim() || !event.target.comment.value.trim()) return alert('작성자와 댓글 내용을 입력해주세요')
 
-    writePost.Comments = [
-      ...writePost.Comments,
-      {
-        User: {
-          nickname: addWriter,
-        },
-        content: addWriteComment,
-        myComment: true,
-        id: Math.floor(Math.random() * 10000000)
-      }
+    const newComment = {
+      User: {
+        nickname: event.target.user.value,
+      },
+      content: event.target.comment.value,
+      myComment: true
+    }
+
+    const userName = post.Comments.map((data) => data.User.nickname)
+    for(let name of userName) {
+      if(name === event.target.user.value) return alert('같은 이름이 있습니다'),
+      event.target.user.value = "",
+      event.target.comment.value = ""
+    }
+
+    tempPost.Comments = [
+      ...tempPost.Comments,
+      newComment
     ]
 
-    setNewPost(writePost)
-    
-    event.target.writer.value = ""
-    event.target.writeComment.value = ""
+    setPost(tempPost)
+    event.target.user.value = ""
+    event.target.comment.value = ""
   }
 
-  //----------------------------------------------------------------
-  // 삭제 :
-  const onPressDeleteComment = (dataId) => {
-    const deletePost = {...newPost}
-    deletePost.Comments = newPost.Comments.filter((data) => data.id !== dataId)
-
-    setNewPost(deletePost)
-  }
-
-  //----------------------------------------------------------------
-
+  //---------------------------------------------------------------------------------
 
   return (
     <S.Wrapper>
       <h1>문제2</h1>
       <S.PostBox>
-        <S.PostTitle>제목: {newPost.title}</S.PostTitle>
-        <S.PostContent>내용: {newPost.content}</S.PostContent>
+        <S.PostTitle>제목: {post.title}</S.PostTitle>
+        <S.PostContent>내용: {post.content}</S.PostContent>
       </S.PostBox>
       <S.PostInfo>
         <p>
-          작성자: <span>{newPost.User.nickname}</span>
+          작성자: <span>{post.User.nickname}</span>
         </p>
         <p>
-          작성자 나이: <span>{newPost.User.age}</span>
+          작성자 나이: <span>{post.User.age}</span>
         </p>
         <p>
-          작성자 키: <span>{newPost.User.height}</span>
+          작성자 키: <span>{post.User.height}</span>
         </p>
       </S.PostInfo>
-      <form onSubmit={onPressAddComment}>
+
+      <form onSubmit={onPressNewComment}>
         <p>
-          댓글 수: <span>{newPost.Comments.length}</span>
+          댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input name="writer" placeholder="작성자" />
-        <input name="writeComment" placeholder="댓글 내용" />
+        <input name="user" placeholder="작성자" />
+        <input name="comment" placeholder="댓글 내용" />
         <button>댓글 작성</button>
       </form>
-      <S.CommentList>
-        {/* list */}
-        {/* 예시 데이터 */}
-        {/* <Comment /> */}
 
-        {
-          newPost.Comments.map((data) => <Comment key={data.id}
-            writer={data.User.nickname} writeComment={data.content}
-            onPressDeleteComment={onPressDeleteComment}
-            dataId={data.id}
-            newPost={newPost} setNewPost={setNewPost}
-            state={data.myComment}
-          />)
-        }
+      <S.CommentList>
+
+        {post.Comments.map((data) => <Comment
+          key={data.User.nickname} data={data}
+          post={post} setPost={setPost}
+        />)}
 
       </S.CommentList>
     </S.Wrapper>

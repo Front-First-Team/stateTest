@@ -1,7 +1,8 @@
 import PlayListMock from "../__mock__/playList.json";
-import React, {useState} from "react"
+import {useState} from "react"
 
 function State1() {
+
   /* 
     문제 1.
 
@@ -12,76 +13,61 @@ function State1() {
     삭제 버턴을 눌렀을 때 데이터가 삭제될 수 있도록 해주세요
   */
 
-  // console.log(PlayListMock.playlist);
-  /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
+  //---------------------------------------------------------------------------------
+  // playList 상태 생성 :
+  const [playList, setPlayList] = useState(PlayListMock.playlist.map((list) => ({
+    ...list,
+    id: Math.floor(Math.random() * 1000000)
+  })))
 
-  //----------------------------------------------------------
-  // 상태 생성 / id 추가 :
-  const plusIdList = PlayListMock.playlist.map((list) => ({
-    ...list, id: Math.floor(Math.random() * 10000000)
-  }))
+  //---------------------------------------------------------------------------------
+  // 추가 버튼 :
+  const onPressNewList = (event) => {
+    event.preventDefault()
 
-  const [playList, setPlayList] = useState(plusIdList)
+    if(!event.target.title.value.trim() || !event.target.singer.value.trim()) return alert('곡명과 가수명을 입력해주세요')
 
-  //----------------------------------------------------------
-  // 삭제 :
+    const newList = {
+      id: Math.floor(Math.random() * 1000000),
+      title: event.target.title.value,
+      signer: event.target.singer.value
+    }
+    setPlayList([...playList, newList])
+
+    event.target.title.value = ""
+    event.target.singer.value = ""
+  }
+
+  //---------------------------------------------------------------------------------
+  // 삭제 버튼 :
   const onPressDeleteList = (listId) => {
     const deleteList = playList.filter((list) => list.id !== listId)
     setPlayList(deleteList)
   }
 
-  //----------------------------------------------------------
-  // 추가 :
-  const onPressAddList = (event) => {
-    event.preventDefault()
-    const titleValue = event.target.title.value
-    const singerValue = event.target.singer.value
-
-    if(!titleValue.trim() || !singerValue.trim) return
-
-    const newList = {
-      title: titleValue,
-      signer: singerValue,
-      id: Math.floor(Math.random() * 10000000)
-    }
-    
-    setPlayList([...playList, newList])
-    event.target.title.value = ""
-    event.target.singer.value = ""
-  }
-  
-  //----------------------------------------------------------
+  //---------------------------------------------------------------------------------
 
   return (
     <>
       <h1>문제1</h1>
       <ul>
-        {/* list */}
-        {/* 예시 데이터 */}
-        <li>
-          {/* <h3>Summer</h3> */}
-          {/* <p>Joe Hisaishi</p> */}
-          {/* <button>삭제 </button> */}
 
-          {
-            playList.map((list) => <React.Fragment key={list.id}>
-              <h3>{list.title}</h3>
-              <p>{list.signer}</p>
-              <button onClick={() => onPressDeleteList(list.id)}>삭제</button>
-            </React.Fragment>)
-          }
+        {playList.map((list) => <li key={list.id}>
+          <h3>{list.title}</h3>
+          <p>{list.signer}</p>
+          <button onClick={() => onPressDeleteList(list.id)}>삭제</button>
+        </li>)}
 
-        </li>
       </ul>
-      <form onSubmit={onPressAddList}>
+      <form onSubmit={onPressNewList}>
         <p>
-          곡명 : <input name="title"/>
+          곡명 : <input name="title" />
         </p>
         <p>
-          가수/작곡 : <input name="singer"/>
+          가수/작곡 : <input name="singer" />
         </p>
         <p>
-          <button type="submit">추가</button>
+          <button>추가</button>
         </p>
       </form>
     </>

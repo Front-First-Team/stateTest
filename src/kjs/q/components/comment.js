@@ -1,48 +1,50 @@
 import { useRef, useState } from "react";
 import styled from "styled-components";
 
-function Comment({writer, writeComment, onPressDeleteComment, dataId,
-  newPost, setNewPost, state
-}) {
+function Comment({data, post, setPost}) {
 
-  //-----------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------
+  // 삭제 :
+  const deletePostBtn = (userId) => {
+    const deletePost = {...post}
+    deletePost.Comments = post.Comments.filter((data) => data.User.nickname !== userId)
+    setPost(deletePost)
+  }
+
+  //---------------------------------------------------------------------------------
   // 수정 :
-  const [isEditMode, setIsEditMode] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
   const contentRef = useRef()
 
-  const onEditMode = () => {
-    setIsEditMode(true)
+  const onPressOnEditMode = () => {
+    setIsEdit(true)
   }
-  const completeEditMode = () => {
-    setIsEditMode(false)
-
-    const content = contentRef.current.value
-
-    const tempPost = {...newPost}
-    const selectedPost = newPost.Comments.findIndex((data) => data.id === dataId)
-    tempPost.Comments[selectedPost] = {
-      ...tempPost.Comments[selectedPost],
-      content
+  
+  const onPressOffEditMode = () => {
+    setIsEdit(false)
+    const editPost = {...post}
+    const dataId = data.User.nickname
+    const selectedIndex = post.Comments.findIndex((data) => data.User.nickname === dataId)
+    editPost.Comments[selectedIndex] = {
+      ...editPost.Comments[selectedIndex],
+      content: contentRef.current.value
     }
-
-    setNewPost(tempPost)
+    setPost(editPost)
   }
-  //-----------------------------------------------------------------------------------
+
+  //---------------------------------------------------------------------------------
 
   return (
     <S.CommentItem>
       <p>
-        {/* 작성자: <span>예시 이름</span> */}
-        작성자: <span>{writer}</span>
+        작성자: <span>{data.User.nickname}</span>
       </p>
       <p>
-        {/* 댓글 내용: <span>예시 내용</span> */}
-        {isEditMode ? <textarea ref={contentRef} defaultValue={writeComment}></textarea> :  <>댓글 내용: <span>{writeComment}</span></>}
-        {/* 댓글 내용: <span>{writeComment}</span> */}
+        {isEdit ? <textarea ref={contentRef} defaultValue={data.content}></textarea> : <>댓글 내용: <span>{data.content}</span></>}
       </p>
       <p>
-        <button onClick={isEditMode ? completeEditMode : onEditMode}>{isEditMode ? "완료" : "수정"}</button>
-        {state && <button onClick={() => onPressDeleteComment(dataId)}>삭제</button>}
+        <button onClick={isEdit ? onPressOffEditMode : onPressOnEditMode}>{isEdit ? "완료" : "수정"}</button>
+        {data.myComment && <button onClick={() => deletePostBtn(data.User.nickname)}>삭제</button>}
       </p>
     </S.CommentItem>
   );
@@ -57,5 +59,3 @@ const CommentItem = styled.li`
 const S = {
   CommentItem,
 };
-
-// onPressEditComment(dataId)

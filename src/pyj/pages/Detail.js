@@ -6,6 +6,7 @@ function DetailPage() {
   const navigate = useNavigate();
   const params = useParams();
   const [product, setProduct] = useState(null); // 상품 정보를 상태로 관리합니다.
+  const [newReview, setNewReview] = useState({ reviewer: "", review: "", rating: 1 }); // 새 리뷰 정보를 상태로 관리합니다.
 
   useEffect(() => {
     // 페이지가 로드될 때 실행되는 부수 효과 함수입니다.
@@ -24,6 +25,26 @@ function DetailPage() {
   }, [params.productNumber, navigate]); 
   // params.productNumber 또는 navigate가 변경될 때마다 실행됩니다.
 
+  const handleInputChange = (e) => {
+    // 입력 필드의 값이 변경될 때 호출되는 함수입니다.
+    const { name, value } = e.target;
+    setNewReview((prevReview) => ({
+      ...prevReview,
+      [name]: value,
+    }));
+  };
+
+  const handleAddReview = () => {
+    // "리뷰 추가" 버튼이 클릭될 때 호출되는 함수입니다.
+    // 기존 리뷰 배열에 새 리뷰를 추가합니다.
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      Review: [...prevProduct.Review, newReview],
+    }));
+    // 새 리뷰 폼을 초기화합니다.
+    setNewReview({ reviewer: "", review: "", rating: 1 });
+  };
+
   if (!product) {
     // 상품 정보가 로드되지 않았을 경우, 아무것도 렌더링하지 않고 null을 반환합니다.
     return null;
@@ -31,13 +52,6 @@ function DetailPage() {
 
   return (
     <div>
-      {/* 
-      상세 페이지는 자유롭게 꾸미시면 됩니다.
-      아직 해당 부분의 진도가 나가지 않았기 때문에 주소의 파람을 가지고 올 수 있는 방법은
-      미리 콘솔에 찍어두었습니다.
-
-      단, 없는 번호 상품으로 접근 시 state페이지로 돌아가도록 구현해주세요
-     */}
       <h2>상세페이지</h2>
       <p>상세 정보: {product.productDetail.productDetailInfo}</p>
       
@@ -46,6 +60,34 @@ function DetailPage() {
       {product.Review.map((review, index) => (
         <Review key={index} review={review} />
       ))}
+
+      <h3>리뷰 추가</h3>
+      <div>
+        {/* 새 리뷰를 입력할 수 있는 폼입니다. */}
+        <input
+          type="text"
+          name="reviewer"
+          value={newReview.reviewer}
+          onChange={handleInputChange}
+          placeholder="리뷰어 이름"
+        />
+        <input
+          type="text"
+          name="review"
+          value={newReview.review}
+          onChange={handleInputChange}
+          placeholder="리뷰 내용"
+        />
+        <input
+          type="number"
+          name="rating"
+          value={newReview.rating}
+          onChange={handleInputChange}
+          min="1"
+          max="5"
+        />
+        <button onClick={handleAddReview}>리뷰 추가</button>
+      </div>
     </div>
   );
 }

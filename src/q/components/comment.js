@@ -2,20 +2,7 @@ import styled from "styled-components";
 
 function Comment({commentlist}) {
   
-    return (
-      {
-        commentlist.map((comment)=> {
-        <S.CommentItem>
-        <p>
-          작성자: <span>{writer}</span>
-        </p>
-        <p>
-          댓글 내용: <span>예시 내용</span>
-        </p>
-      </S.CommentItem>
-      
-      })}
-  );
+    return ;
   
     }
 

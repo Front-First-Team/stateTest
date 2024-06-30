@@ -24,18 +24,19 @@ function State1() {
   // 추가 버튼 :
   const onPressNewList = (event) => {
     event.preventDefault()
+    const {title, singer} = event.target
 
-    if(!event.target.title.value.trim() || !event.target.singer.value.trim()) return alert('곡명과 가수명을 입력해주세요')
+    if(!title.value.trim() || !singer.value.trim()) return alert('곡명과 가수명을 입력해주세요')
 
     const newList = {
       id: Math.floor(Math.random() * 1000000),
-      title: event.target.title.value,
-      signer: event.target.singer.value
+      title: title.value,
+      signer: singer.value
     }
     setPlayList([...playList, newList])
 
-    event.target.title.value = ""
-    event.target.singer.value = ""
+    title.value = ""
+    singer.value = ""
   }
 
   //---------------------------------------------------------------------------------

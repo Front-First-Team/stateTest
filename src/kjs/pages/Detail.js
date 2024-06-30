@@ -25,24 +25,22 @@ function DetailPage() {
     if(!params.productNumber) return navigation("/") //--> 없는 주소를 입력하면 메인페이지로 돌아간다
     const productTarget = productList.products.find((product) => params.productNumber === product.productNumber)
     setProductDetail(productTarget)
-  }, [params]) //--> params 가 바뀔 때마다 재실행한다
+  }, [params.productNumber]) //--> 주소가 바뀔 때마다 재실행한다
 
   //---------------------------------------------------------------------------------------------------------------------
   // 리뷰 작성 :
   const onPressNewReview = (event) => {
     event.preventDefault()
     const tempDetail = {...productDetail}
-    const reviewer = event.target.reviewer.value
-    const review = event.target.review.value
-    const rating = event.target.rating.value
+    const {reviewer, review, rating} = event.target
 
-    if(!reviewer.trim() || !review.trim() || !rating.trim()) return alert('입력창 모두 작성해주세요')
-    if(rating < 0 || rating > 5) return alert('평점은 0~5 점으로 입력해주세요')
+    if(!reviewer.value.trim() || !review.value.trim() || !rating.value.trim()) return alert('입력창 모두 작성해주세요')
+    if(rating.value < 0 || rating.value > 5) return alert('평점은 0~5 점으로 입력해주세요'), rating.value = ""
 
     const newReview = {
-      reviewer: reviewer,
-      review: review,
-      rating: rating
+      reviewer: reviewer.value,
+      review: review.value,
+      rating: rating.value
     }
     tempDetail.Review = [
       ...tempDetail.Review,
@@ -50,9 +48,9 @@ function DetailPage() {
     ]
 
     setProductDetail(tempDetail)
-    event.target.reviewer.value = ""
-    event.target.review.value = ""
-    event.target.rating.value = ""
+    reviewer.value = ""
+    review.value = ""
+    rating.value = ""
   }
 
   //---------------------------------------------------------------------------------------------------------------------

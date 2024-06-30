@@ -69,22 +69,23 @@ function State2() {
   const onPressNewComment = (event) => {
     event.preventDefault()
     const tempPost = {...post}
+    const {user, comment} = event.target
     
-    if(!event.target.user.value.trim() || !event.target.comment.value.trim()) return alert('작성자와 댓글 내용을 입력해주세요')
+    if(!user.value.trim() || !comment.value.trim()) return alert('작성자와 댓글 내용을 입력해주세요')
 
     const newComment = {
       User: {
-        nickname: event.target.user.value,
+        nickname: user.value,
       },
-      content: event.target.comment.value,
+      content: comment.value,
       myComment: true
     }
 
     const userName = post.Comments.map((data) => data.User.nickname)
     for(let name of userName) {
-      if(name === event.target.user.value) return alert('같은 이름이 있습니다'),
-      event.target.user.value = "",
-      event.target.comment.value = ""
+      if(name === user.value) return alert('같은 이름이 있습니다'),
+      user.value = "",
+      comment.value = ""
     }
 
     tempPost.Comments = [
@@ -93,8 +94,8 @@ function State2() {
     ]
 
     setPost(tempPost)
-    event.target.user.value = ""
-    event.target.comment.value = ""
+    user.value = ""
+    comment.value = ""
   }
 
   //---------------------------------------------------------------------------------

@@ -34,7 +34,7 @@ function DetailPage() {
       </div>
       <div>
         {/*구매평 */}
-        {/* 구매평 추가 */}
+        <button>평가하기</button>
       </div>
     </div>
   );

@@ -2,21 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Comment from "./components/comment";
 
-
-
 function State2() {
-  /*  
-    문제 2.
-
-    Q1. 아래 작성된 state의 mock data를 활용하여
-        댓글 목록을 화면에 랜더링 해보세요 :)
-        Components는 src/components/state/comment.js를 활용하세요
-        
-    Q2. 댓글 작성 수정 삭제 기능을 구현해보세요 :)
-            1. 댓글 작성 기능
-            2. 댓글 수정 기능
-            3. 댓글 삭제 기능 ( 본인이 작성한 댓글만 삭제할 수 있습니다, myComment 활용 )
-    */
 
   const [post, setPost] = useState({
     title: "안녕하세요 여러분 김성용 강사입니다 :)",
@@ -28,6 +14,7 @@ function State2() {
     },
     Comments: [
       {
+        id: 1,
         User: {
           nickname: "김사과",
         },
@@ -35,6 +22,7 @@ function State2() {
         myComment: false,
       },
       {
+        id: 2,
         User: {
           nickname: "반하나",
         },
@@ -42,28 +30,54 @@ function State2() {
         myComment: false,
       },
       {
+        id: 3,
         User: {
           nickname: "오렌지",
         },
-        content: "오늘도 화이팅입니다!",
+        content: "오늘도? 화이팅입니다!",
         myComment: false,
       },
       {
+        id: 4,
         User: {
           nickname: "이멜론",
         },
-        content: "오늘도 화이팅입니다!",
+        content: "오늘도?? 화이팅입니다!",
         myComment: false,
       },
       {
+        id: 5,
         User: {
           nickname: "박수박",
         },
-        content: "오늘도 화이팅입니다!",
+        content: "오늘도??? 화이팅입니다!",
         myComment: false,
       },
     ],
   });
+  // 댓글 추가 로직 
+  const addComment = (comment) => {
+    const newId = Math.floor(Math.random() * 10000);
+    const addComment = { ...post, Comments: [...post.Comments, { ...comment, id: newId }] }
+    setPost(addComment);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addComment({ content, User: { nickname } });
+    setNickname("");
+    setContent("");
+  }
+  const [nickname, setNickname] = useState();
+  const [content, setContent] = useState();
+
+  //--------------삭제 -> Comment
+
+  const deleteComment = (id) => {
+    const deletepost = { ...post };
+    deletepost.Comments = post.Comments.filter((comment) => comment.id !== id)
+    setPost(deletepost)
+  }
+
 
   return (
     <S.Wrapper>
@@ -87,19 +101,28 @@ function State2() {
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" />
-        <input placeholder="댓글 내용" />
-        <button>댓글 작성</button>
+        <form onSubmit={handleSubmit}>
+          <input value={nickname} onChange={(e) => setNickname(e.target.value)} name='nickname' placeholder="작성자" />
+          <input value={content} onChange={(e) => setContent(e.target.value)} name='content' placeholder="댓글 내용" />
+          <button>댓글 작성</button>
+        </form>
       </div>
       <S.CommentList>
-        {/* list */}
-        {/* 예시 데이터 */}
-        <Comment />
+
+        {post.Comments.map((data) => <Comment data={data} post={post} deleteComment={deleteComment} setPost={setPost} />)}
+
       </S.CommentList>
     </S.Wrapper>
   );
 }
 export default State2;
+
+// 먼저 추가,삭제 로직을 구현해볼것이다. 중첩객체 배열을 신경쓰며 해보자
+// 사용할 상태의 초기값은 정해져있다./
+// 먼저 조회를 해보자
+//  - S.CommentList>에 데이터를 조회 할것이다 전에 했던 방법과 마찬가지로 map을 사용해 전부 순회할것이고
+// 내가 화면에 보일것은 Comment 컴포넌트이다. -> 접근할 데이터를 map을 돌려 Comments의 복사본을 생성후 Comment컴포넌트로 props를 전닳해주자
+// 복사본에서 미리 Comments 로접근했기때문에 데이터를 조회할때 Comments접근없이 바로 데이터에 접근하면된다.
 
 const Wrapper = styled.div`
   display: flex;

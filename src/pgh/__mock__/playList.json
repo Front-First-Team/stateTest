@@ -1,0 +1,54 @@
+{
+  "playlist": [
+    {
+      "id": 1,
+      "title": "The Best of the 80's",
+      "signer": "Various Artists"
+    },
+    {
+      "id": 2,
+      "title": "Summer",
+      "signer": "Joe Hisaishi"
+    },
+    {
+      "id": 3,
+      "title": "Waving Through A Window",
+      "signer": "Ben Platt"
+    },
+    {
+      "id": 4,
+      "title": "GROWING IP IS ____",
+      "signer": "Ruel"
+    },
+    {
+      "id": 5,
+      "title": "Ghost Town",
+      "signer": "Benson Boone"
+    },
+    {
+      "id": 6,
+      "title": "Memories",
+      "signer": "Conan Gray"
+    },
+    {
+      "id": 7,
+      "title": "One",
+      "signer": "Ed Sheeran"
+    },
+    {
+      "id": 8,
+      "title": "I.O.U",
+      "signer": "Carry & Ron"
+    },
+    {
+      "id": 9,
+      "title": "Masquerade",
+      "signer": "Elina"
+    },
+    {
+      "id": 10,
+      "title": "Batter then this",
+      "signer": "Lauv"
+    }
+  ]
+}
